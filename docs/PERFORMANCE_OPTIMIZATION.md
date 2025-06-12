@@ -27,7 +27,7 @@ The first request in production was taking ~5 seconds instead of the expected ~1
 
 #### 1. **Removed Redundant Configuration Reloading**
 
-**File**: `src/core/agent/athena-agent.ts`
+**File**: `src/core/agent/workflows/langgraph-workflow-manager.ts`
 ```typescript
 // BEFORE: Configuration reloaded on every request
 async invoke(userInput: string, onChunk?: (chunk: string) => void): Promise<string> {
@@ -62,7 +62,7 @@ const currentConfig = config.get();
 
 #### 2. **Added System Prompt Caching**
 
-**File**: `src/core/agent/athena-agent.ts`
+**File**: `src/core/agent/workflows/langgraph-workflow-manager.ts`
 ```typescript
 class LangGraphWorkflowManager implements WorkflowManager {
     private cachedSystemPrompt?: string; // ✅ ADDED
