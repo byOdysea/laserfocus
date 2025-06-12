@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('settingsAPI', {
     getModels: (provider: string) => ipcRenderer.invoke('settings:get-models', provider),
     openByokWidget: () => ipcRenderer.send('settings:open-byok-widget'),
     focus: () => ipcRenderer.send('settings:focus'),
-    focusByokWidget: () => ipcRenderer.send('settings:focus-byok-widget'),
+    focusByokWidget: () => ipcRenderer.send('settings:open-byok-widget'),
     // MCP-related methods
     testMCPConnection: (serverConfig: any) => ipcRenderer.invoke('settings:test-mcp-connection', serverConfig),
     getMCPStatus: () => ipcRenderer.invoke('settings:get-mcp-status'),

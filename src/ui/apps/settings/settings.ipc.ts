@@ -6,6 +6,8 @@ import { SettingsWindow } from '@ui/apps/settings/settings.main';
 import * as logger from '@utils/logger';
 import { IpcMain } from 'electron';
 
+let openByokWidgetListener: (() => void) | null = null;
+
 const SettingsIpcHandlers: AppIpcModule = {
     moduleId: 'Settings',
     
@@ -327,7 +329,7 @@ const SettingsIpcHandlers: AppIpcModule = {
         });
 
         // Open BYOK widget for API key management
-        ipcMain.on('settings:open-byok-widget', () => {
+        openByokWidgetListener = () => {
             const byokInstance = allAppInstances?.get('byokwidget');
             if (byokInstance && byokInstance.focus) {
                 byokInstance.focus();
@@ -336,7 +338,8 @@ const SettingsIpcHandlers: AppIpcModule = {
                 logger.warn('[settingsIPC] BYOK widget instance not found - it may have been closed');
                 // TODO: Could implement widget recreation here if needed
             }
-        });
+        };
+        ipcMain.on('settings:open-byok-widget', openByokWidgetListener);
 
         // Focus the app window
         ipcMain.on('settings:focus', () => {
@@ -361,7 +364,10 @@ const SettingsIpcHandlers: AppIpcModule = {
         ipcMain.removeHandler('settings:update-mcp-server');
         ipcMain.removeHandler('settings:add-mcp-server');
         ipcMain.removeHandler('settings:remove-mcp-server');
-        ipcMain.removeHandler('settings:focus-byok-widget');
+        if (openByokWidgetListener) {
+            ipcMain.removeListener('settings:open-byok-widget', openByokWidgetListener);
+            openByokWidgetListener = null;
+        }
     }
 };
 
