@@ -39,10 +39,10 @@ appModules.forEach(module => {
 
 **Files Updated:**
 - `src/main.ts` - Updated imports and variable names
-- `src/core/app-discovery/main-process-discovery.ts` - Updated import path
+- `src/core/platform/discovery/main-process-discovery.ts` - Updated import path
 - `src/ui/platform/InputPill/inputpill.ipc.ts` - Updated import path  
 - `src/ui/platform/Byokwidget/byokwidget.ipc.ts` - Updated import path
-- `src/core/app-discovery/app-generator.ts` - Updated import path
+- `src/core/platform/discovery/app-generator.ts` - Updated import path
 
 ### **Phase 4: Eliminated Code Duplication** ✅
 - **Removed**: Duplicate Byokwidget handlers from AgentBridge

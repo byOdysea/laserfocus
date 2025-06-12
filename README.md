@@ -803,7 +803,7 @@ src/
 - **Platform Component Tracking**: Real-time monitoring of UI components
 - **Type-Safe IPC**: Comprehensive TypeScript coverage for all communications
 
-### UI Discovery Service (`src/core/app-discovery/`)
+### UI Discovery Service (`src/core/platform/discovery/`)
 
 **Automatic App Detection:**
 The UI Discovery Service automatically scans for and registers available applications:

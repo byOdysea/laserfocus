@@ -43,12 +43,12 @@ Successfully implemented comprehensive UI system enhancements to solve conversat
 - **Old Types**: `'platform-ui-component' | 'application' | 'widget'`
 - **New Types**: `'platform' | 'app' | 'widget'`
 - **Files Updated**: 
-  - `src/core/app-discovery/app-registry.ts`
-  - `src/core/app-discovery/main-process-discovery.ts`
-  - `src/core/app-discovery/vite-app-discovery.ts`
+  - `src/core/platform/discovery/app-registry.ts`
+  - `src/core/platform/discovery/main-process-discovery.ts`
+  - `src/core/platform/discovery/vite-app-discovery.ts`
   - `src/core/main-process/window-registry.ts`
 
-#### App Generator Forward Support (`src/core/app-discovery/app-generator.ts`)
+#### App Generator Forward Support (`src/core/platform/discovery/app-generator.ts`)
 - **Enhanced Path Parsing**: Supports both `apps/` and `app/`, `widgets/` and `widget/` for forward compatibility
 - **Consistent Structure**: Maintains backward compatibility while supporting future patterns
 
@@ -62,7 +62,7 @@ create_element: {"type": "browser", "contentType": "url", "contentSource": "app:
 create_element: {"type": "browser", "contentType": "url", "contentSource": "widget:MyWidget", ...}
 ```
 
-#### UI Discovery Service Singleton (`src/core/app-discovery/main-process-discovery.ts`)
+#### UI Discovery Service Singleton (`src/core/platform/discovery/main-process-discovery.ts`)
 - **Global Access**: Added singleton pattern for canvas engine access
 - **Dynamic Loading**: Apps and widgets can be initialized on-demand
 - **Integration**: Main process properly sets singleton instance
