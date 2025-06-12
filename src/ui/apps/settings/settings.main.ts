@@ -1,34 +1,26 @@
 import { getWindowRegistry } from '@core/platform/windows/window-registry';
-import { createAppFileLoader } from '@lib/utils/app-file-loader';
 import * as logger from '@utils/logger';
 import { BrowserWindow, Display } from 'electron';
+import { BaseAppWindow } from '@ui/common/base-app-window';
 
-export class SettingsWindow {
+export class SettingsWindow extends BaseAppWindow {
     public window: BrowserWindow;
-    private fileLoader: ReturnType<typeof createAppFileLoader>;
-    private preloadPath: string;
 
     constructor(primaryDisplay: Display, viteDevServerUrl: string | undefined, preloadPath: string) {
-        this.fileLoader = createAppFileLoader(viteDevServerUrl);
-        this.preloadPath = preloadPath;
-        this.window = new BrowserWindow({
-            width: 800,
-            height: 600,
-            title: 'settings',
-            webPreferences: {
-                preload: this.preloadPath,
-                nodeIntegration: false,
-                contextIsolation: true,
-            },
-            frame: false,
-            transparent: true,
-            vibrancy: 'sidebar',
-            show: false, // Don't show until ready
-            minWidth: 400,
-            minHeight: 300,
-        });
+        super(
+            { width: 800, height: 600 },
+            'settings',
+            viteDevServerUrl,
+            preloadPath,
+            {
+                frame: false,
+                transparent: true,
+                vibrancy: 'sidebar',
+                minWidth: 400,
+                minHeight: 300,
+            }
+        );
 
-        // Show window when ready to prevent visual flash
         this.window.once('ready-to-show', () => {
             this.window.show();
         });
@@ -69,18 +61,6 @@ export class SettingsWindow {
         // Open DevTools in development
         if (this.fileLoader.isDevelopment()) {
             // this.window.webContents.openDevTools({ mode: 'detach' });
-        }
-    }
-
-    focus(): void {
-        if (this.window && !this.window.isDestroyed()) {
-            this.window.focus();
-        }
-    }
-
-    close(): void {
-        if (this.window && !this.window.isDestroyed()) {
-            this.window.close();
         }
     }
 }

@@ -2,13 +2,14 @@
 import { AppIpcModule } from '@core/platform/ipc/types';
 import logger from '@utils/logger';
 import { IpcMain } from 'electron';
+import { BaseAppWindow } from '@ui/common/base-app-window';
 
 const AthenaWidgetIpcHandlers: AppIpcModule = {
     moduleId: 'AthenaWidget',
     
     registerMainProcessHandlers: (
         ipcMain: IpcMain,
-        appInstance: any
+        appInstance: BaseAppWindow
     ) => {
         logger.info('[AthenaWidget.ipc] Registering simple AthenaWidget IPC handlers.');
         

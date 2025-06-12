@@ -1,5 +1,5 @@
 import { AppIpcModule, AppMainProcessInstances } from '@core/platform/ipc/types';
-import { RemindersWindow } from '@ui/apps/reminders/reminders.main';
+import { BaseAppWindow } from '@ui/common/base-app-window';
 import { createLogger } from '@utils/logger';
 import { IpcMain } from 'electron';
 
@@ -10,7 +10,7 @@ const RemindersIpcHandlers: AppIpcModule = {
     
     registerMainProcessHandlers: (
         ipcMain: IpcMain,
-        appInstance: RemindersWindow,
+        appInstance: BaseAppWindow,
         allAppInstances?: AppMainProcessInstances
     ) => {
         logger.info('Registering reminders IPC handlers');

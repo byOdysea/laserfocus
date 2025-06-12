@@ -1,58 +1,51 @@
 // src/apps/InputPill/input-pill.main.ts
 import { getWindowRegistry } from '@/core/platform/windows/window-registry';
-import { createAppFileLoader } from '@lib/utils/app-file-loader';
 import * as logger from '@utils/logger';
 import { BrowserWindow, Display, ipcMain } from 'electron';
+import { BaseAppWindow } from '@ui/common/base-app-window';
 
 const INPUT_PILL_WIDTH = 700;
 const INPUT_PILL_HEIGHT = 60;
 const INPUT_PILL_Y_OFFSET_FROM_BOTTOM = 60;
 
-export class InputPill {
-    public window: BrowserWindow | null = null;
-    private fileLoader: ReturnType<typeof createAppFileLoader>;
-    private primaryDisplay: Display;
-    private preloadScriptPath: string;
+export class InputPill extends BaseAppWindow {
 
     constructor(
         primaryDisplay: Display,
         viteDevServerUrl: string | undefined,
         preloadScriptPath: string
     ) {
-        this.primaryDisplay = primaryDisplay;
-        this.fileLoader = createAppFileLoader(viteDevServerUrl);
-        this.preloadScriptPath = preloadScriptPath;
-    }
-
-    public async init(): Promise<void> {
-        const workArea = this.primaryDisplay.workArea;
+        const workArea = primaryDisplay.workArea;
 
         const x = Math.round(workArea.x + (workArea.width - INPUT_PILL_WIDTH) / 2);
-        const y = Math.round(workArea.y + workArea.height - INPUT_PILL_HEIGHT - INPUT_PILL_Y_OFFSET_FROM_BOTTOM);
+        const y = Math.round(
+            workArea.y +
+                workArea.height -
+                INPUT_PILL_HEIGHT -
+                INPUT_PILL_Y_OFFSET_FROM_BOTTOM
+        );
 
-        this.window = new BrowserWindow({
-            width: INPUT_PILL_WIDTH,
-            height: INPUT_PILL_HEIGHT,
-            title: 'Laserfocus Input Interface', // Unique, descriptive title
-            x: x,
-            y: y,
-            frame: false,
-            transparent: true,
-            alwaysOnTop: true,
-            show: false, // Initially hidden
-            resizable: false,
-            movable: true,
-            skipTaskbar: true,
-            webPreferences: {
-                preload: this.preloadScriptPath,
-                contextIsolation: true,
-                nodeIntegration: false,
-            },
-        });
+        super(
+            { width: INPUT_PILL_WIDTH, height: INPUT_PILL_HEIGHT, x, y },
+            'Laserfocus Input Interface',
+            viteDevServerUrl,
+            preloadScriptPath,
+            {
+                frame: false,
+                transparent: true,
+                alwaysOnTop: true,
+                resizable: false,
+                movable: true,
+                skipTaskbar: true,
+            }
+        );
 
         this.window.setAlwaysOnTop(true, 'floating');
         this.window.setVisibleOnAllWorkspaces(true);
         this.window.setFullScreenable(false);
+    }
+
+    public async init(): Promise<void> {
 
         try {
             await this.fileLoader.loadAppHtml(
@@ -89,7 +82,6 @@ export class InputPill {
 
         this.window.on('closed', () => {
             logger.info('[InputPill.main] Window closed.');
-            this.window = null;
         });
 
         // Example: Listen for an event to show the InputPill
@@ -101,22 +93,7 @@ export class InputPill {
     public show(): void {
         if (this.window && !this.window.isDestroyed()) {
             logger.info('[InputPill.main] Showing window.');
-            
-            // If window is minimized, restore it
-            if (this.window.isMinimized()) {
-                this.window.restore();
-            }
-            
-            // Show the window if it's hidden
-            if (!this.window.isVisible()) {
-                this.window.show();
-            }
-            
-            // Focus the window and input
-            this.window.focus();
-            this.window.webContents.focus();
-            
-            // Focus the input element
+            super.focus();
             this.window.webContents.executeJavaScript(`
                 const input = document.getElementById('query-input');
                 if (input) {
@@ -133,7 +110,7 @@ export class InputPill {
         }
     }
 
-    public getBrowserWindow(): BrowserWindow | null {
+    public getBrowserWindow(): BrowserWindow {
         return this.window;
     }
 }

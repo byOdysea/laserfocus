@@ -1,6 +1,6 @@
 // src/apps/InputPill/input-pill.ipc.ts
 import { AppIpcModule, AppMainProcessInstances } from '@core/platform/ipc/types';
-import { InputPill } from '@ui/platform/InputPill/inputpill.main'; // Specific type for appInstance
+import { BaseAppWindow } from '@ui/common/base-app-window';
 import * as logger from '@utils/logger';
 import { IpcMain } from 'electron';
 
@@ -13,7 +13,7 @@ const InputPillIpcHandlers: AppIpcModule = {
 
     registerMainProcessHandlers: (
         ipcMainInstance: IpcMain,
-        appInstance: InputPill,
+        appInstance: BaseAppWindow,
         allAppInstances?: AppMainProcessInstances
     ) => {
         logger.info(`[InputPill.ipc] Registering IPC handlers for ${InputPillIpcHandlers.moduleId}`);

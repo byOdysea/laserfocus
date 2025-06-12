@@ -2,7 +2,7 @@ import { generateUISchema } from '@/core/infrastructure/config/schema-utils';
 import { PROVIDER_MODELS, getProviderModelsWithDefaults } from '@core/infrastructure/config/config';
 import { ConfigurationManager } from '@core/infrastructure/config/configuration-manager';
 import { AppIpcModule, AppMainProcessInstances } from '@core/platform/ipc/types';
-import { SettingsWindow } from '@ui/apps/settings/settings.main';
+import { BaseAppWindow } from '@ui/common/base-app-window';
 import * as logger from '@utils/logger';
 import { IpcMain } from 'electron';
 
@@ -11,7 +11,7 @@ const SettingsIpcHandlers: AppIpcModule = {
     
     registerMainProcessHandlers: (
         ipcMain: IpcMain,
-        appInstance: SettingsWindow,
+        appInstance: BaseAppWindow,
         allAppInstances?: AppMainProcessInstances
     ) => {
         logger.info('[settingsIPC] Registering settings IPC handlers');
